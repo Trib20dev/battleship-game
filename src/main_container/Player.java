@@ -5,15 +5,6 @@ import java.util.ArrayList;
 public class Player {
 	ArrayList<Boat> boats;
 	ArrayList<String> boatsNames;
-	//Adding the boats names
-	{
-	boatsNames.add("Carrier");
-	boatsNames.add("Battleship");
-	boatsNames.add("Cruiser");
-	boatsNames.add("Submarine");
-	boatsNames.add("Destroyer");
-	}
-	
 	int shots[][] = new int[10][10];
 	int currentBoats = 0;
 	
@@ -26,14 +17,19 @@ public class Player {
 	 */
 	public Player() {
 		boats.add(new Boat(5));
+		boatsNames.add("Carrier");
 		boats.add(new Boat(4));
+		boatsNames.add("Battleship");
 		boats.add(new Boat(3));
+		boatsNames.add("Cruiser");
 		boats.add(new Boat(3));
+		boatsNames.add("Submarine");
 		boats.add(new Boat(2));
+		boatsNames.add("Destroyer");
 	}
 	
 	public void setBoatPosition(int initialRow, int finalRow, int initialCloumn, int finalColumn) {
 		boats.get(currentBoats++).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
 	}
-
+		
 }
