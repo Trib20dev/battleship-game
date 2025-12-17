@@ -5,9 +5,14 @@ import java.util.ArrayList;
 public class Boat {
 	private ArrayList<Coordinates> coordinates;
 	//(state) ? hit : not hit 
-	private ArrayList<Boolean> estado;
+	private ArrayList<Boolean> state;
 	private int currentCoordinatesSet = 0;
 	private int maxCoordinates;
+	private boolean isHorizontal;
+	
+	public ArrayList<Boolean> getState(){
+	  return state:
+	}
 	
 	public Boat(int maxCoordinates){
 	  this.maxCoordinates = maxCoordinates;
@@ -24,6 +29,14 @@ public class Boat {
 	}
 	
 	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn){
+	  isHorizontal = (initialRow==finalRow)?true:false;
+	  if(isHorizontal){
+	    int goingUpOrDownIncrement = (finalColumn>initialColumn) ? -1 : 1;
+	    for(int i=0;i<maxCoordinates;i++)
+	      coordinates.add(new Coordinates(initialRow,initialColumn + goingUpOrDownIncrement*currentCoordinatesSet++))
+	  } else{
+	    
+	  }
 	  
 	}
 	
