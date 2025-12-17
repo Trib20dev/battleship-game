@@ -31,7 +31,7 @@ public class Boat {
 	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn){
 	  isHorizontal = (initialRow==finalRow)?true:false;
 	  if(isHorizontal){
-	    int goingUpOrDownIncrement = (finalColumn>initialColumn) ? -1 : 1;
+	    int goingRightOrLeftIncrement = (finalColumn>initialColumn) ? 1 : -1;
 	    while(currentCoordinatesSet<maxCoordinates)
 	      coordinates.add(new Coordinates(initialRow,initialColumn + goingUpOrDownIncrement*currentCoordinatesSet++))
 	  } else{
