@@ -23,4 +23,8 @@ public class Boat {
 		estado.removeLast();
 	}
 	
+	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn){
+	  
+	}
+	
 }
