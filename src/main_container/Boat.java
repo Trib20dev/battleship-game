@@ -32,7 +32,7 @@ public class Boat {
 	  isHorizontal = (initialRow==finalRow)?true:false;
 	  if(isHorizontal){
 	    int goingUpOrDownIncrement = (finalColumn>initialColumn) ? -1 : 1;
-	    for(int i=0;i<maxCoordinates;i++)
+	    while(currentCoordinatesSet<maxCoordinates)
 	      coordinates.add(new Coordinates(initialRow,initialColumn + goingUpOrDownIncrement*currentCoordinatesSet++))
 	  } else{
 	    
