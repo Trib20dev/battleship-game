@@ -13,22 +13,16 @@ public class Start {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Player[] players = {player1,player2};
-		int currentPlayer = 0; //0 for player 1, 1 for 2
-		
-		
+		int currentPlayer = 0; //0 for player 1, 1 for player 2
 		
 		//First may do some introductions, but im to lazy to do those as of now
 		
 		//Loops to create the boats
-		
-		//Player 1
-		while(player1.getCurrentBoats()!=5) {
-			
-		}
-		
-		//Player2
-		while(player2.getCurrentBoats()!=5) {
-			
+		//Players with for
+		for(int i=0;i<2;i++) {
+			while(players[0].getCurrentBoats()!=5) {
+				
+			}	
 		}
 		
 		//Game loop for shots, will continue until either of them has no boats left
@@ -40,10 +34,10 @@ public class Start {
 			do {
 				System.out.println("what will you do?");
 				if(input.matches("(?i).*see my boats.*")) 
-					players[currentPlayer].printMyBoats;
+					players[currentPlayer].printMyBoats();;
 				
 				if(input.matches("(?i).*see my shots.*")) 
-					players[currentPlayer].printMyShots;
+					players[currentPlayer].printMyShots();
 				
 			} while(!input.matches("(?i)^[A-J][0-9]$"));
 			
@@ -52,8 +46,8 @@ public class Start {
 				currentPlayer = (currentPlayer==1)?2:1;
 				continue;
 			}
-			
 			System.out.printf("You shot at: %s\n", input.toUpperCase());
+			players[currentPlayer].getShotsMade().add(input);
 			
 			int row = input.charAt(0) -'A';
 			int column = input.charAt(1) - '0';

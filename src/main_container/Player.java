@@ -2,6 +2,8 @@ package main_container;
 
 import java.net.SecureCacheResponse;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Player {
 	ArrayList<Boat> boats = new ArrayList<>();
@@ -10,7 +12,7 @@ public class Player {
 	int currentBoats = 0;
 	int notSunkBoats = 5;
 	ArrayList<String> boatsCoordinates = new ArrayList<>();//So that i can use .contains() to check them -> May change from string to something else
-	ArrayList<String> shotsMade = new ArrayList<>(); //Have to decide if i'll use either this or the other
+	Set<String> shotsMade = new HashSet<>(); //Found that this is better i believe
 	/* 
 	 * Carrier 5 coordinates
 	 * Battleship 4 coordinates
@@ -43,6 +45,16 @@ public class Player {
 		currentBoats++;
 	}
 
+	//Print boards
+	public void printMyBoats() {
+		
+	}
+	
+	public void printMyShots() {
+		
+	}
+	
+	
 	public int getNotSunkBoats() {
 		return notSunkBoats;
 	}
@@ -51,7 +63,7 @@ public class Player {
 		return currentBoats;
 	}
 	
-	public ArrayList<String> getShotsMade() {
+	public Set<String> getShotsMade() {
 		return shotsMade;
 	}
 
