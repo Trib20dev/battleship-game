@@ -3,7 +3,7 @@ package main_container;
 import java.util.ArrayList;
 
 public class Boat {
-	private ArrayList<Coordinates> coordinates = new ArrayList<>();
+	private ArrayList<String> coordinates = new ArrayList<>();
 	//(state) ? hit : not hit 
 	private ArrayList<Boolean> state = new ArrayList<>();
 	private int currentCoordinatesSet = 0;
@@ -19,7 +19,7 @@ public class Boat {
 		return totalCoordinates;
 	}
 
-	public ArrayList<Coordinates> getCoordinates() {
+	public ArrayList<String> getCoordinates() {
 		return coordinates;
 	}
 
@@ -32,7 +32,7 @@ public class Boat {
 	}
 	
 	public void addCoordiante(int row, int column) {
-		coordinates.add(new Coordinates(row, column));
+		coordinates.add(String.format("%d%d", row,column));
 		state.add(false);
 	}
 	
@@ -49,13 +49,13 @@ public class Boat {
 		  int column = initialColumn;
 	    int goingRightOrLeftIncrement = (finalColumn>initialColumn) ? 1 : -1;
 	    while(currentCoordinatesSet<totalCoordinates)
-	      coordinates.add(new Coordinates(row,column + (goingRightOrLeftIncrement*currentCoordinatesSet++)));
+	      coordinates.add(String.format("%d%d",row,(column + goingRightOrLeftIncrement*currentCoordinatesSet++)));
 	  } else{
 		  int column = initialColumn;
 		  int row = initialRow;
 		  int goingUpOrDownIncrement = (finalRow>initialRow) ? 1 : -1;
 		  while(currentCoordinatesSet<totalCoordinates)
-		      coordinates.add(new Coordinates(row,column + (goingUpOrDownIncrement*currentCoordinatesSet++)));
+		      coordinates.add(String.format("%d%d",row + (goingUpOrDownIncrement*currentCoordinatesSet++),column));
 	  }
 	}
 	

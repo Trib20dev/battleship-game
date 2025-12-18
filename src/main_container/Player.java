@@ -35,14 +35,7 @@ public class Player {
 	
 	//Should be complete?
 	public void setBoatPosition(int initialRow, int finalRow, int initialCloumn, int finalColumn) {
-		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
-		for(int i=0;i<boats.get(currentBoats).getTotalCoordinates();i++) {
-			boatsCoordinates.add(
-					String.valueOf(boats.get(currentBoats).getCoordinates().get(i).getRow())
-					+ String.valueOf(boats.get(currentBoats).getCoordinates().get(i).getColumn())
-					);
-		}
-		currentBoats++;
+		boats.get(currentBoats++).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
 	}
 
 	//Print boards
