@@ -41,7 +41,7 @@ public class Boat {
 		state.removeLast();
 	}
 	
-	//Should be working now
+	//Should be working now -> Corrected 
 	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn){
 	  isHorizontal = (initialRow==finalRow)?true:false;
 	  if(isHorizontal){
