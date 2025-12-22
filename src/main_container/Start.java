@@ -17,6 +17,23 @@ public class Start {
 		
 		//First may do some introductions, but im to lazy to do those as of now
 		
+		
+		
+		//Trying to make it work
+		player1.boatsCoordinates.add("01");
+		player1.ownSunkCoordinates.add("01");
+		player1.boatsCoordinates.add("02");
+		player1.boatsCoordinates.add("03");
+		player1.boatsCoordinates.add("14");
+		
+		player1.printMyBoats();
+		
+		
+		
+		
+		
+		
+		
 		//Loops to create the boats
 		//Players with for
 		for(int i=0;i<2;i++) {

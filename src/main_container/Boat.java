@@ -9,7 +9,7 @@ public class Boat {
 	private int currentCoordinatesSet = 0;
 	private int totalCoordinates;
 	private boolean isHorizontal;
-	private boolean hasSunk = false;
+	private boolean sunk = false;
 	
 	public ArrayList<Boolean> getState(){
 	  return state;
@@ -24,7 +24,7 @@ public class Boat {
 	}
 
 	public boolean getHasSunk() {
-		return hasSunk;
+		return sunk;
 	}
 
 	public Boat(int totalCoordinates){
@@ -59,12 +59,12 @@ public class Boat {
 	  }
 	}
 	
-	private void hasItSunk() {
+	private void isSunk() {
 		for(int i=0;i<totalCoordinates;i++)
 			//It exits the function if there even one coordinate not hit
 			if(state.get(i)) return;
 		
-		hasSunk = true;
+		sunk = true;
 	}
 	
 	
