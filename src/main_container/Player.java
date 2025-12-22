@@ -1,6 +1,5 @@
 package main_container;
 
-import java.net.SecureCacheResponse;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +9,14 @@ public class Player {
 	ArrayList<String> boatsNames = new ArrayList<>();
 	int shots[][] = new int[10][10];
 	int currentBoats = 0;
-	int notSunkBoats = 5;
-	ArrayList<String> boatsCoordinates = new ArrayList<>();//So that i can use .contains() to check them -> May change from string to something else
-	Set<String> shotsMade = new HashSet<>(); //Found that this is better i believe
+	int sunkBoats = 5;
+	Set<String> boatsCoordinates = new HashSet<>();//So that i can use .contains() to check them -> May change from string to something else It changed to Set :)
+	Set<String> shotsMade = new HashSet<>(); //Found that this is better i believe -> Ended up using it quit a few times
 	Set<String> shotsReceived = new HashSet<>();
 	Set<String> ownSunkCoordinates = new HashSet<>();
 	Set<String> enemySunkCoordinates = new HashSet<>();
+	Set<String> enemyFoundCoordinates = new HashSet<>();
+	
 	/* 
 	 * Carrier 5 coordinates
 	 * Battleship 4 coordinates
@@ -41,6 +42,10 @@ public class Player {
 		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
 		boatsCoordinates.addAll(boats.get(currentBoats++).getCoordinates());
 	}
+	public void removeLastBoat() {
+		boatsCoordinates.removeAll(boats.get(--currentBoats).getCoordinates());
+		boats.removeLast();
+	}
 
 	/*
 	 * Printable possibilities characters:
@@ -51,15 +56,19 @@ public class Player {
 	 * Sunk ship: ☒
 	 */
 	
-	//Print boards
+	//Print boards -> I believe they are finished
 	public void printMyBoats() {
 		System.out.println("  0 1 2 3 4 5 6 7 8 9");
 		for(int f=0;f<10;f++) {
-			System.out.printf("%c ",'A'+f);
+			System.out.printf("%c ",'A'+f);			
 			for(int c=0; c<10;c++) {
-				if(ownSunkCoordinates.contains(String.format("%d%d", f,c)))
+				if(ownSunkCoordinates.contains(String.format("%c%d", 'A' + f,c)))
 					System.out.printf("☒ ");
-				else if(boatsCoordinates.contains(String.format("%d%d", f,c))&&)
+				else if(boatsCoordinates.contains(String.format("%c%d", 'A' + f,c))&&shotsReceived.contains(String.format("%c%d", 'A' + f,c)))//hit
+					System.out.printf("▣ ");
+				else if(shotsReceived.contains(String.format("%c%d", 'A' + f,c)))
+					System.out.printf("□ ");
+				else if(boatsCoordinates.contains(String.format("%c%d", 'A' + f,c)))
 					System.out.printf("■ ");
 				else
 					System.out.printf("· ");
@@ -69,10 +78,16 @@ public class Player {
 	}
 	
 	public void printMyShots() {
+		System.out.println("  0 1 2 3 4 5 6 7 8 9");
 		for(int f=0;f<10;f++) {
+			System.out.printf("%c ",'A'+f);			
 			for(int c=0; c<10;c++) {
-				if(boatsCoordinates.contains(String.format("%d%d", f,c)))
-					System.out.printf("■ ");
+				if(enemySunkCoordinates.contains(String.format("%c%d", 'A' + f,c)))
+					System.out.printf("☒ ");
+				else if(shotsMade.contains(String.format("%c%d", 'A' + f,c))&&enemyFoundCoordinates.contains(String.format("%c%d", 'A' + f,c)))//Hit
+					System.out.printf("▣ ");
+				else if(shotsMade.contains(String.format("%c%d", 'A' + f,c)))
+					System.out.printf("□ ");
 				else
 					System.out.printf("· ");
 			}
@@ -81,8 +96,8 @@ public class Player {
 	}
 	
 	
-	public int getNotSunkBoats() {
-		return notSunkBoats;
+	public int getSunkBoats() {
+		return sunkBoats;
 	}
 
 	public int getCurrentBoats() {
@@ -91,13 +106,6 @@ public class Player {
 	
 	public Set<String> getShotsMade() {
 		return shotsMade;
-	}
-
-	public void removeLastBoat() {
-		currentBoats--;
-		for(int i=0;i<boats.get(--currentBoats).getTotalCoordinates();i++)
-			boatsCoordinates.removeLast();
-		boats.removeLast();
 	}
 	
 	

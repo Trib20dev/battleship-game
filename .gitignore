@@ -13,3 +13,6 @@
 target/
 build/
 /bin/
+
+#Tries file
+Tries.java
