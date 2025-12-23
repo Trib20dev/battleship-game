@@ -14,6 +14,7 @@ public class Start {
 		Player player2 = new Player();
 		Player[] players = {player1,player2};
 		int currentPlayer = 0; //0 for player 1, 1 for player 2
+		int currentEnemy = 1;
 		
 		//First may do some introductions, but im to lazy to do those as of now
 		
@@ -26,7 +27,7 @@ public class Start {
 		}
 		
 		//Game loop for shots, will continue until either of them has no boats left
-		while(player1.getNotSunkBoats()!=0&&player2.getNotSunkBoats()!=0) {
+		while(player1.getSunkBoats()!=5&&player2.getSunkBoats()!=5) {
 			//Tell which players turn it is
 			System.out.printf("It's player %d's turn\n",(currentPlayer==0)?1:2);
 	
@@ -46,22 +47,47 @@ public class Start {
 			//Check whether that move has been made already
 			if(players[currentPlayer].getShotsMade().contains(input)) {
 				System.out.printf("You already shot at %s, not the wisest move",input);
-				currentPlayer = (currentPlayer==1)?2:1;
+				currentPlayer = (currentPlayer==0)?1:0;
+				currentEnemy = (currentEnemy==0)?1:0;
 				continue;
 			}
 			
 			System.out.printf("You shot at: %s\n", input);
+			//We add the shot to the current player AAND the enemy
 			players[currentPlayer].getShotsMade().add(input);
+			players[currentEnemy].getShotsReceived().add(input);
 			
-//			players[(currentPlayer==1)?0:1]
+			//We store the input as numbers, dont remember why i needed this but anyways
+//			String inputAsNumbers = String.format("%d%d", input.charAt(0) -'A', input.charAt(1) - '0');
 			
-			int row = input.charAt(0) -'A';
-			int column = input.charAt(1) - '0';
-			String inputAsNumbers = String.format("%d%d", row, column);
-			//Have some exams, will have to wait
+			//Now i'll check whether you hit something
+			if(players[currentEnemy].getBoatsCoordinates().contains(input)) {
+				//Add the found coordinate
+				players[currentPlayer].getEnemyFoundCoordinates().add(input);
+				//Go trough all the boats
+				for(int i=0;i<players[currentEnemy].getBoats().size();i++) 
+					//Check wheter that boat is the one with such coordinates
+					if(players[currentEnemy].getBoats().get(i).getCoordinates().contains(input)) {
+						//We know search the index of the concret coordinate and modifie its state
+						for(int j=0;j<players[currentEnemy].getBoats().get(i).getCoordinates().size();j++)
+							if(players[currentEnemy].getBoats().get(i).getCoordinates().get(j).contains(input))
+								players[currentEnemy].getBoats().get(i).setStateHitAt(j);
+							
+						//Now we look up whether that boat has sunk
+						if(players[currentEnemy].getBoats().get(i).isSunk()) {
+							//Now i have to add the sunk coordinates to the current player and the enemy player
+							players[currentPlayer].getEnemySunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
+							players[currentEnemy].getOwnSunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
+							//Then i should update the current sunk boats count
+							players[currentEnemy].oneMoreSunkBoat();
+						}
+						
+					}
+			}
 			
-			
-			
+			//Now i dont think theres anything left but changing the player
+			currentPlayer = (currentPlayer==0)?1:0;
+			currentEnemy = (currentEnemy==0)?1:0;
 		}
 		
 	}

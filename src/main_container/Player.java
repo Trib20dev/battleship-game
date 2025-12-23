@@ -9,13 +9,9 @@ public class Player {
 	ArrayList<String> boatsNames = new ArrayList<>();
 	int shots[][] = new int[10][10];
 	int currentBoats = 0;
-	int sunkBoats = 5;
-	Set<String> boatsCoordinates = new HashSet<>();//So that i can use .contains() to check them -> May change from string to something else It changed to Set :)
-	Set<String> shotsMade = new HashSet<>(); //Found that this is better i believe -> Ended up using it quit a few times
-	Set<String> shotsReceived = new HashSet<>();
-	Set<String> ownSunkCoordinates = new HashSet<>();
-	Set<String> enemySunkCoordinates = new HashSet<>();
-	Set<String> enemyFoundCoordinates = new HashSet<>();
+	int sunkBoats = 0;
+	//I realized i could just initialize them like this
+	Set<String> boatsCoordinates,enemyFoundCoordinates,shotsMade,shotsReceived,ownSunkCoordinates,enemySunkCoordinates= new HashSet<>();
 	
 	/* 
 	 * Carrier 5 coordinates
@@ -107,9 +103,34 @@ public class Player {
 	public Set<String> getShotsMade() {
 		return shotsMade;
 	}
-	
-	
-		
+
+	public Set<String> getShotsReceived() {
+		return shotsReceived;
+	}
+
+	public Set<String> getBoatsCoordinates() {
+		return boatsCoordinates;
+	}
+
+	public ArrayList<Boat> getBoats() {
+		return boats;
+	}
+
+	public Set<String> getOwnSunkCoordinates() {
+		return ownSunkCoordinates;
+	}
+
+	public Set<String> getEnemySunkCoordinates() {
+		return enemySunkCoordinates;
+	}
+
+	public Set<String> getEnemyFoundCoordinates() {
+		return enemyFoundCoordinates;
+	}
+
+	public void oneMoreSunkBoat() {
+		sunkBoats++;
+	}
 	
 	
 }

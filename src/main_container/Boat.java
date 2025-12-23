@@ -14,6 +14,10 @@ public class Boat {
 	public ArrayList<Boolean> getState() {
 		return state;
 	}
+	
+	public void setStateHitAt(int index) {	
+		state.set(index,true);
+	}
 
 	public int getTotalCoordinates() {
 		return totalCoordinates;
@@ -21,10 +25,6 @@ public class Boat {
 
 	public ArrayList<String> getCoordinates() {
 		return coordinates;
-	}
-
-	public boolean getHasSunk() {
-		return sunk;
 	}
 
 	public Boat(int totalCoordinates) {
@@ -61,11 +61,12 @@ public class Boat {
 		}
 	}
 
-	private void isSunk() {
+	public boolean isSunk() {
 		for (int i = 0; i < totalCoordinates; i++)
 			if (!state.get(i))// It exits the function if there even one coordinate not hit
-				return;
+				return false;
 		sunk = true;
+		return sunk;
 	}
 
 }
