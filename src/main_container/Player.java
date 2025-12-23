@@ -44,9 +44,10 @@ public class Player {
 		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
 		boatsCoordinates.addAll(boats.get(currentBoats++).getCoordinates());
 	}
+	//I need to look trhough this -> Should be done
 	public void removeLastBoat() {
 		boatsCoordinates.removeAll(boats.get(--currentBoats).getCoordinates());
-		boats.removeLast();
+		boats.get(currentBoats).removeCoordinates();
 	}
 
 	/*
@@ -97,6 +98,9 @@ public class Player {
 		}
 	}
 	
+	public void oneMoreSunkBoat() {
+		sunkBoats++;
+	}
 	
 	public int getSunkBoats() {
 		return sunkBoats;
@@ -134,9 +138,10 @@ public class Player {
 		return enemyFoundCoordinates;
 	}
 
-	public void oneMoreSunkBoat() {
-		sunkBoats++;
+	public ArrayList<String> getBoatsNames() {
+		return boatsNames;
 	}
+
 	
 	
 }

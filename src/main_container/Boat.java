@@ -31,17 +31,21 @@ public class Boat {
 		this.totalCoordinates = totalCoordinates;
 	}
 
+	//Is this ever used?
 	public void addCoordiante(int row, int column) {
 		coordinates.add(String.format("%d%d", row, column));
 		state.add(false);
 	}
 
-	public void removeLastCoordinate() {
-		coordinates.removeLast();
-		state.removeLast();
+	public void removeCoordinates() {
+		for(int i=0; i<totalCoordinates;i++) {
+			coordinates.removeLast();
+			state.removeLast();			
+		}
+		currentCoordinatesSet=0;
 	}
 
-	// Should be working now -> Corrected
+	// Should be working now -> Corrected -> Changed the coordinates format to A0 from 00
 	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn) {
 		isHorizontal = (initialRow == finalRow) ? true : false;
 		if (isHorizontal) {
@@ -50,21 +54,20 @@ public class Boat {
 			int goingRightOrLeftMultiplier = (finalColumn > initialColumn) ? 1 : -1;
 			while (currentCoordinatesSet < totalCoordinates)
 				coordinates.add(
-						String.format("%d%d", row, (column + goingRightOrLeftMultiplier * currentCoordinatesSet++)));
+						String.format("%c%d", 'A' + row, (column + goingRightOrLeftMultiplier * currentCoordinatesSet++)));
 		} else {
 			int column = initialColumn;
 			int row = initialRow;
 			int goingUpOrDownMultiplier = (finalRow > initialRow) ? 1 : -1;
 			while (currentCoordinatesSet < totalCoordinates)
-				coordinates
-						.add(String.format("%d%d", row + (goingUpOrDownMultiplier * currentCoordinatesSet++), column));
+				coordinates.add(
+						String.format("%c%d", 'A' + row + (goingUpOrDownMultiplier * currentCoordinatesSet++), column));
 		}
 	}
 
 	public boolean isSunk() {
 		for (int i = 0; i < totalCoordinates; i++)
-			if (!state.get(i))// It exits the function if there even one coordinate not hit
-				return false;
+			if (!state.get(i))return false;// It exits the function if there even one coordinate not hit
 		sunk = true;
 		return sunk;
 	}

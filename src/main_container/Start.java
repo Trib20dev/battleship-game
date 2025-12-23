@@ -1,5 +1,6 @@
 package main_container;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Start {
@@ -19,11 +20,39 @@ public class Start {
 		
 		//Loops to create the boats
 		//Players with for
+		System.out.println("The boats shall be created with the format:\n A0 A4\n Where the you indicate from which space to which space your boat exists");
 		for(int i=0;i<2;i++) {
-			while(players[0].getCurrentBoats()!=5) {
+			System.out.printf("It's player %d's turn\n",(i==0)?1:2);
+			
+			//Easier reading varables
+			int boatsAccesIndex;
+			String boatName;
+			ArrayList<Boat> boats;
+			int boatLength;
+			
+			while(players[i].getCurrentBoats()!=5) {
+				//Initialize those variables
+				boats = players[i].getBoats();
+				boatsAccesIndex = players[i].getCurrentBoats();
+				boatName = players[i].getBoatsNames().get(boatsAccesIndex);
+				boatLength = boats.get(boatsAccesIndex).getTotalCoordinates();
+				
+				System.out.printf("Where will the %s which ocupies %d spaces be?\n"
+						,boatName
+						,boatLength);
+				
+				do {
+					
+				}while(!input.matches("^[A-J][0-9] [A-J][0-9]$"));
+				
 				
 			}
 		}
+		
+		
+		
+		
+		
 		
 		//Game loop for shots, will continue until either of them has no boats left
 		while(player1.getSunkBoats()!=5&&player2.getSunkBoats()!=5) {
@@ -74,6 +103,8 @@ public class Start {
 							
 						//Now we look up whether that boat has sunk
 						if(players[currentEnemy].getBoats().get(i).isSunk()) {
+							//TODO Add which boat was sunk using the index to look for the name and then use a print 
+							
 							//Now i have to add the sunk coordinates to the current player and the enemy player
 							players[currentPlayer].getEnemySunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
 							players[currentEnemy].getOwnSunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
