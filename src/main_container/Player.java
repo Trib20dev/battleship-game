@@ -10,8 +10,14 @@ public class Player {
 	int shots[][] = new int[10][10];
 	int currentBoats = 0;
 	int sunkBoats = 0;
-	//I realized i could just initialize them like this
-	Set<String> boatsCoordinates,enemyFoundCoordinates,shotsMade,shotsReceived,ownSunkCoordinates,enemySunkCoordinates= new HashSet<>();
+	//I realized i could just initialize them like this -> In fact i could not
+	Set<String> boatsCoordinates = new HashSet<>();
+	Set<String> enemyFoundCoordinates = new HashSet<>();
+	Set<String> shotsMade = new HashSet<>();
+	Set<String> shotsReceived = new HashSet<>();
+	Set<String> ownSunkCoordinates = new HashSet<>();
+	Set<String> enemySunkCoordinates = new HashSet<>();
+
 	
 	/* 
 	 * Carrier 5 coordinates

@@ -1,6 +1,5 @@
 package main_container;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Start {
@@ -47,8 +46,8 @@ public class Start {
 			//Check whether that move has been made already
 			if(players[currentPlayer].getShotsMade().contains(input)) {
 				System.out.printf("You already shot at %s, not the wisest move",input);
-				currentPlayer = (currentPlayer==0)?1:0;
-				currentEnemy = (currentEnemy==0)?1:0;
+				currentPlayer = 1 - currentPlayer;
+				currentEnemy = 1 - currentEnemy;
 				continue;
 			}
 			
@@ -86,8 +85,8 @@ public class Start {
 			}
 			
 			//Now i dont think theres anything left but changing the player
-			currentPlayer = (currentPlayer==0)?1:0;
-			currentEnemy = (currentEnemy==0)?1:0;
+			currentPlayer = 1 - currentPlayer;
+			currentEnemy = 1 - currentEnemy;
 		}
 		
 	}
