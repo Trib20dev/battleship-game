@@ -40,8 +40,8 @@ public class Player {
 	}
 	
 	//Should be complete?
-	public void setBoatPosition(int initialRow, int finalRow, int initialCloumn, int finalColumn) {
-		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialCloumn, finalColumn);
+	public void setBoatPosition(int initialRow, int finalRow, int initialColumn, int finalColumn) {
+		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialColumn, finalColumn);
 		boatsCoordinates.addAll(boats.get(currentBoats++).getCoordinates());
 	}
 	//I need to look trhough this -> Should be done
@@ -100,6 +100,10 @@ public class Player {
 	
 	public void oneMoreSunkBoat() {
 		sunkBoats++;
+	}
+	
+	public void oneMoreSetBoat() {
+		currentBoats++;
 	}
 	
 	public int getSunkBoats() {

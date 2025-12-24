@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
 
+
 public class Start {
 	
 	//Static scanner
@@ -21,7 +22,7 @@ public class Start {
 		
 		//Loops to create the boats
 		//Players with for
-		System.out.println("The boats shall be created with the format:\n A0 A4\n Where the you indicate from which space to which space your boat exists");
+		System.out.println("The boats shall be created with the format:\nA0 A4\nWhere you indicate from which space to which space your boat exists");
 		for(int i=0;i<2;i++) {
 			System.out.printf("It's player %d's turn\n",(i==0)?1:2);
 			
@@ -37,25 +38,42 @@ public class Start {
 				boatsAccesIndex = players[i].getCurrentBoats();
 				boatName = players[i].getBoatsNames().get(boatsAccesIndex);
 				boatLength = boats.get(boatsAccesIndex).getTotalCoordinates();
+				boolean boatRemoved = false;
 				
 				String input;
 				do {
 					System.out.printf("Where will the %s which ocupies %d spaces be?\n"
 							,boatName
 							,boatLength);
-					input = scanner.nextLine();
+					input = scanner.nextLine().toUpperCase();
+					
+					if(input.matches("(?i)remove boat")&&boatsAccesIndex>0) {
+						System.out.println("You removed your last boat");
+						players[i].removeLastBoat();
+						boatRemoved = true;
+						break;
+					}
+					
 				}while(!input.matches("^[A-J][0-9] [A-J][0-9]$"));
 
-				//Check whether it is a posible position:
-				if(boatMayExist(input, players[i].getBoatsCoordinates())) {
-					//Save if posible
-					players[i].setBoatPosition((int)(input.charAt(0) - 'A'),
-											   (int)(input.charAt(1) - '0'),
-											   (int)(input.charAt(3) - 'A'),
-											   (int)(input.charAt(4) - '0'));
-				}
+				//Restart the cycle if you removed a boat
+				if(boatRemoved)
+					continue;
 				
+				//Check whether it is a posible position:
+				if(!boatMayExist(input, players[i].getBoatsCoordinates(),boatLength)) {
+					//As it can't exist
+					System.out.println("Not valid, try again");
+					continue;
+				}
+				players[i].setBoatPosition(
+						(int)(input.charAt(0) - 'A'),
+						(int)(input.charAt(3) - 'A'),
+						(int)(input.charAt(1) - '0'),
+						(int)(input.charAt(4) - '0'));
+				players[i].printMyBoats();
 			}
+			System.out.println("\n".repeat(50));
 		}
 		
 		
@@ -94,11 +112,10 @@ public class Start {
 			players[currentPlayer].getShotsMade().add(input);
 			players[currentEnemy].getShotsReceived().add(input);
 			
-			//We store the input as numbers, dont remember why i needed this but anyways
-//			String inputAsNumbers = String.format("%d%d", input.charAt(0) -'A', input.charAt(1) - '0');
-			
 			//Now i'll check whether you hit something
 			if(players[currentEnemy].getBoatsCoordinates().contains(input)) {
+				//Inform the player
+				System.out.println("Hit!");
 				//Add the found coordinate
 				players[currentPlayer].getEnemyFoundCoordinates().add(input);
 				//Go trough all the boats
@@ -113,7 +130,7 @@ public class Start {
 						//Now we look up whether that boat has sunk
 						if(players[currentEnemy].getBoats().get(i).isSunk()) {
 							//TODO Add which boat was sunk using the index to look for the name and then use a print 
-							
+							System.out.printf("You sunk your enemy's %s\n", players[currentEnemy].getBoatsNames().get(i));
 							//Now i have to add the sunk coordinates to the current player and the enemy player
 							players[currentPlayer].getEnemySunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
 							players[currentEnemy].getOwnSunkCoordinates().addAll(players[currentEnemy].getBoats().get(i).getCoordinates());
@@ -123,23 +140,66 @@ public class Start {
 						
 					}
 			}
+			//If you did't hit anything
+			else System.out.println("Miss!");
 			
 			//Now i dont think theres anything left but changing the player
 			currentPlayer = 1 - currentPlayer;
 			currentEnemy = 1 - currentEnemy;
 		}
+		System.out.println("GAME OVER!");
+		System.out.printf("Player %d is the winner!", (player1.getSunkBoats() == 5) ? 2 : 1);
 		
 	}
 
-	private static boolean boatMayExist(String input, Set<String> boatsCoordinates) {
-		int initialRow 		= (int)(input.charAt(0)-'A');
-		int finalRow 		= (int)(input.charAt(1)-'0');
-		int initialColumn 	= (int)(input.charAt(3)-'A');
-		int finalColumn  	= (int)(input.charAt(4)-'0');
+	private static boolean boatMayExist(String input, Set<String> boatsCoordinates, int boatLength) {
+		int initialRow 		= (int)(input.charAt(0) - 'A');
+		int finalRow 		= (int)(input.charAt(3) - 'A');
+		int initialColumn 	= (int)(input.charAt(1) - '0');
+		int finalColumn  	= (int)(input.charAt(4) - '0');
+		
+		if(initialColumn!=finalColumn&&initialRow!=finalRow)//Exits if you input a diagonal
+			return false;
+		
+		boolean isHorizontal = initialRow == finalRow;
+		
+		//Order them up and check the length
+		if(isHorizontal) {
+			if(initialColumn>finalColumn) {
+				int aux = initialColumn;
+				initialColumn = finalColumn;
+				finalColumn = aux;
+			}
+			if(!(finalColumn-initialColumn+1==boatLength))
+				return false;
+		}else {
+			if(initialRow>finalRow) {
+				int aux = initialRow;
+				initialRow = finalRow;
+				finalRow = aux;
+			}
+			if(!(finalRow-initialRow+1==boatLength))
+				return false;
+		}
 		
 		
-		
-		return false;
+		if(isHorizontal) {
+			for(int c=initialColumn;c<=finalColumn;c++)
+				if(!emptyAround(initialRow, c, boatsCoordinates))
+					return false;
+		} else 
+			for(int r=initialRow;r<=finalRow;r++)
+				if(!emptyAround(r, initialColumn, boatsCoordinates))
+					return false;
+		return true;
+	}
+	
+	private static boolean emptyAround(int row, int column,Set<String> boatCoordinates) {
+		for(int r=-1;r<=1;r++)
+			for(int c=-1;c<=1;c++)
+				if(boatCoordinates.contains(String.format("%c%d", row+'A' + r, column+c)))
+					return false;
+		return true;
 	}
 
 	

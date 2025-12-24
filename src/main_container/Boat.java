@@ -38,30 +38,37 @@ public class Boat {
 	}
 
 	public void removeCoordinates() {
-		for(int i=0; i<totalCoordinates;i++) {
-			coordinates.removeLast();
-			state.removeLast();			
-		}
+		coordinates.clear();
+		state.clear();			
 		currentCoordinatesSet=0;
 	}
 
 	// Should be working now -> Corrected -> Changed the coordinates format to A0 from 00
 	public void setCoordinates(int initialRow, int finalRow, int initialColumn, int finalColumn) {
+		// We clear for security before adding the new ones
+	    coordinates.clear();
+	    state.clear();
+	    currentCoordinatesSet = 0;
+		
 		isHorizontal = (initialRow == finalRow) ? true : false;
 		if (isHorizontal) {
 			int row = initialRow;
 			int column = initialColumn;
 			int goingRightOrLeftMultiplier = (finalColumn > initialColumn) ? 1 : -1;
-			while (currentCoordinatesSet < totalCoordinates)
+			while (currentCoordinatesSet < totalCoordinates) {
 				coordinates.add(
 						String.format("%c%d", 'A' + row, (column + goingRightOrLeftMultiplier * currentCoordinatesSet++)));
+				state.add(false);
+			}
 		} else {
 			int column = initialColumn;
 			int row = initialRow;
 			int goingUpOrDownMultiplier = (finalRow > initialRow) ? 1 : -1;
-			while (currentCoordinatesSet < totalCoordinates)
+			while (currentCoordinatesSet < totalCoordinates) {
 				coordinates.add(
 						String.format("%c%d", 'A' + row + (goingUpOrDownMultiplier * currentCoordinatesSet++), column));
+				state.add(false);
+			}
 		}
 	}
 
