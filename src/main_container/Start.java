@@ -2,6 +2,7 @@ package main_container;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Start {
 	
@@ -37,14 +38,22 @@ public class Start {
 				boatName = players[i].getBoatsNames().get(boatsAccesIndex);
 				boatLength = boats.get(boatsAccesIndex).getTotalCoordinates();
 				
-				System.out.printf("Where will the %s which ocupies %d spaces be?\n"
-						,boatName
-						,boatLength);
-				
+				String input;
 				do {
-					
+					System.out.printf("Where will the %s which ocupies %d spaces be?\n"
+							,boatName
+							,boatLength);
+					input = scanner.nextLine();
 				}while(!input.matches("^[A-J][0-9] [A-J][0-9]$"));
-				
+
+				//Check whether it is a posible position:
+				if(boatMayExist(input, players[i].getBoatsCoordinates())) {
+					//Save if posible
+					players[i].setBoatPosition((int)(input.charAt(0) - 'A'),
+											   (int)(input.charAt(1) - '0'),
+											   (int)(input.charAt(3) - 'A'),
+											   (int)(input.charAt(4) - '0'));
+				}
 				
 			}
 		}
@@ -121,4 +130,17 @@ public class Start {
 		}
 		
 	}
+
+	private static boolean boatMayExist(String input, Set<String> boatsCoordinates) {
+		int initialRow 		= (int)(input.charAt(0)-'A');
+		int finalRow 		= (int)(input.charAt(1)-'0');
+		int initialColumn 	= (int)(input.charAt(3)-'A');
+		int finalColumn  	= (int)(input.charAt(4)-'0');
+		
+		
+		
+		return false;
+	}
+
+	
 }
