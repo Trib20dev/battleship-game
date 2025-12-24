@@ -136,7 +136,7 @@ public class Start {
 			} else {
 				System.out.println("Miss!");
 			}
-			
+      players[currentPlayer].printMyShots;
 			// Switch turns
 			currentPlayer = 1 - currentPlayer;
 			currentEnemy = 1 - currentEnemy;
