@@ -11,34 +11,34 @@ import java.util.Set;
  */
 public class Player {
 	/** List of Boat objects belonging to the player's fleet. */
-	ArrayList<Boat> boats = new ArrayList<>();
+	private ArrayList<Boat> boats = new ArrayList<>();
 	
 	/** Display names for each type of boat in the fleet. */
-	ArrayList<String> boatsNames = new ArrayList<>();
+	private ArrayList<String> boatsNames = new ArrayList<>();
 	
 	/** Tracker for the number of boats currently positioned on the board. */
-	int currentBoats = 0;
+	private int currentBoats = 0;
 	
 	/** Tracker for the number of the player's boats that have been sunk. */
-	int sunkBoats = 0;
+	private int sunkBoats = 0;
 	
 	/** Global set of all coordinates occupied by the player's fleet. */
-	Set<String> boatsCoordinates = new HashSet<>();
+	private Set<String> boatsCoordinates = new HashSet<>();
 	
 	/** Set of coordinates where the player successfully hit an enemy boat. */
-	Set<String> enemyFoundCoordinates = new HashSet<>();
+	private Set<String> enemyFoundCoordinates = new HashSet<>();
 	
 	/** Set of all coordinates where the player has fired a shot. */
-	Set<String> shotsMade = new HashSet<>();
+	private Set<String> shotsMade = new HashSet<>();
 	
 	/** Set of all coordinates where the enemy has fired at this player. */
-	Set<String> shotsReceived = new HashSet<>();
+	private Set<String> shotsReceived = new HashSet<>();
 	
 	/** Set of the player's own coordinates that belong to a fully sunk boat. */
-	Set<String> ownSunkCoordinates = new HashSet<>();
+	private Set<String> ownSunkCoordinates = new HashSet<>();
 	
 	/** Set of the enemy's coordinates that belong to a fully sunk boat. */
-	Set<String> enemySunkCoordinates = new HashSet<>();
+	private Set<String> enemySunkCoordinates = new HashSet<>();
 
 	/**
 	 * Constructor: Initializes the standard fleet for a Battleship game.
