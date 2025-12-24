@@ -4,27 +4,45 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents a player in the Battleship game.
+ * Manages the player's fleet, shot history, and board rendering logic.
+ * It uses several HashSets to optimize coordinate lookup during game turns.
+ */
 public class Player {
+	/** List of Boat objects belonging to the player's fleet. */
 	ArrayList<Boat> boats = new ArrayList<>();
+	
+	/** Display names for each type of boat in the fleet. */
 	ArrayList<String> boatsNames = new ArrayList<>();
-	int shots[][] = new int[10][10];
+	
+	/** Tracker for the number of boats currently positioned on the board. */
 	int currentBoats = 0;
+	
+	/** Tracker for the number of the player's boats that have been sunk. */
 	int sunkBoats = 0;
-	//I realized i could just initialize them like this -> In fact i could not
+	
+	/** Global set of all coordinates occupied by the player's fleet. */
 	Set<String> boatsCoordinates = new HashSet<>();
+	
+	/** Set of coordinates where the player successfully hit an enemy boat. */
 	Set<String> enemyFoundCoordinates = new HashSet<>();
+	
+	/** Set of all coordinates where the player has fired a shot. */
 	Set<String> shotsMade = new HashSet<>();
+	
+	/** Set of all coordinates where the enemy has fired at this player. */
 	Set<String> shotsReceived = new HashSet<>();
+	
+	/** Set of the player's own coordinates that belong to a fully sunk boat. */
 	Set<String> ownSunkCoordinates = new HashSet<>();
+	
+	/** Set of the enemy's coordinates that belong to a fully sunk boat. */
 	Set<String> enemySunkCoordinates = new HashSet<>();
 
-	
-	/* 
-	 * Carrier 5 coordinates
-	 * Battleship 4 coordinates
-	 * Cruiser 3 coordinates
-	 * Submarine 3 coordinates
-	 * Destroyer 2 coordinates
+	/**
+	 * Constructor: Initializes the standard fleet for a Battleship game.
+	 * Default fleet: Carrier (5), Battleship (4), Cruiser (3), Submarine (3), Destroyer (2).
 	 */
 	public Player() {
 		boats.add(new Boat(5));
@@ -39,39 +57,50 @@ public class Player {
 		boatsNames.add("Destroyer");
 	}
 	
-	//Should be complete?
+	/**
+	 * Positions a boat on the board and updates the global coordinate registry.
+	 * @param initialRow Starting row index.
+	 * @param finalRow Ending row index.
+	 * @param initialColumn Starting column index.
+	 * @param finalColumn Ending column index.
+	 */
 	public void setBoatPosition(int initialRow, int finalRow, int initialColumn, int finalColumn) {
 		boats.get(currentBoats).setCoordinates(initialRow, finalRow, initialColumn, finalColumn);
 		boatsCoordinates.addAll(boats.get(currentBoats++).getCoordinates());
 	}
-	//I need to look trhough this -> Should be done
+	
+	/**
+	 * Reverts the last boat placement.
+	 * Decrements the counter and removes the boat's coordinates from the global registry.
+	 */
 	public void removeLastBoat() {
 		boatsCoordinates.removeAll(boats.get(--currentBoats).getCoordinates());
 		boats.get(currentBoats).removeCoordinates();
 	}
 
-	/*
-	 * Printable possibilities characters:
-	 * Untouched water: ·
-	 * Missed shot: □
-	 * Hidden ship: ■
-	 * Hit ship: ▣
-	 * Sunk ship: ☒
+	/**
+	 * Renders the player's own board to the console.
+	 * Symbols used:
+	 * · Untouched water
+	 * □ Missed enemy shot
+	 * ■ Intact ship segment
+	 * ▣ Hit ship segment
+	 * ☒ Fully sunk ship
 	 */
-	
-	//Print boards -> I believe they are finished
 	public void printMyBoats() {
 		System.out.println("  0 1 2 3 4 5 6 7 8 9");
-		for(int f=0;f<10;f++) {
-			System.out.printf("%c ",'A'+f);			
-			for(int c=0; c<10;c++) {
-				if(ownSunkCoordinates.contains(String.format("%c%d", 'A' + f,c)))
+		for(int f=0; f<10; f++) {
+			System.out.printf("%c ", 'A'+f);			
+			for(int c=0; c<10; c++) {
+				String coord = String.format("%c%d", 'A' + f, c);
+				
+				if(ownSunkCoordinates.contains(coord))
 					System.out.printf("☒ ");
-				else if(boatsCoordinates.contains(String.format("%c%d", 'A' + f,c))&&shotsReceived.contains(String.format("%c%d", 'A' + f,c)))//hit
+				else if(boatsCoordinates.contains(coord) && shotsReceived.contains(coord))
 					System.out.printf("▣ ");
-				else if(shotsReceived.contains(String.format("%c%d", 'A' + f,c)))
+				else if(shotsReceived.contains(coord))
 					System.out.printf("□ ");
-				else if(boatsCoordinates.contains(String.format("%c%d", 'A' + f,c)))
+				else if(boatsCoordinates.contains(coord))
 					System.out.printf("■ ");
 				else
 					System.out.printf("· ");
@@ -80,16 +109,26 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Renders the board showing the player's offensive progress (shots fired at enemy).
+	 * Symbols used:
+	 * · Unknown/Unfired water
+	 * □ Miss (Shot into empty water)
+	 * ▣ Hit (Confirmed hit on enemy vessel)
+	 * ☒ Sunk (Confirmed sunk enemy vessel)
+	 */
 	public void printMyShots() {
 		System.out.println("  0 1 2 3 4 5 6 7 8 9");
-		for(int f=0;f<10;f++) {
-			System.out.printf("%c ",'A'+f);			
-			for(int c=0; c<10;c++) {
-				if(enemySunkCoordinates.contains(String.format("%c%d", 'A' + f,c)))
+		for(int f=0; f<10; f++) {
+			System.out.printf("%c ", 'A'+f);			
+			for(int c=0; c<10; c++) {
+				String coord = String.format("%c%d", 'A' + f, c);
+				
+				if(enemySunkCoordinates.contains(coord))
 					System.out.printf("☒ ");
-				else if(shotsMade.contains(String.format("%c%d", 'A' + f,c))&&enemyFoundCoordinates.contains(String.format("%c%d", 'A' + f,c)))//Hit
+				else if(shotsMade.contains(coord) && enemyFoundCoordinates.contains(coord))
 					System.out.printf("▣ ");
-				else if(shotsMade.contains(String.format("%c%d", 'A' + f,c)))
+				else if(shotsMade.contains(coord))
 					System.out.printf("□ ");
 				else
 					System.out.printf("· ");
@@ -98,54 +137,63 @@ public class Player {
 		}
 	}
 	
+	/** Increments the count of player's boats that have been sunk. */
 	public void oneMoreSunkBoat() {
 		sunkBoats++;
 	}
 	
+	/** Increments the count of boats positioned during setup. */
 	public void oneMoreSetBoat() {
 		currentBoats++;
 	}
 	
+	/** @return Total number of player's boats already sunk. */
 	public int getSunkBoats() {
 		return sunkBoats;
 	}
 
+	/** @return Number of boats currently placed on the board. */
 	public int getCurrentBoats() {
 		return currentBoats;
 	}
 	
+	/** @return Set of all coordinates targeted by this player. */
 	public Set<String> getShotsMade() {
 		return shotsMade;
 	}
 
+	/** @return Set of all coordinates where this player received fire. */
 	public Set<String> getShotsReceived() {
 		return shotsReceived;
 	}
 
+	/** @return Set of coordinates belonging to this player's fleet. */
 	public Set<String> getBoatsCoordinates() {
 		return boatsCoordinates;
 	}
 
+	/** @return List of Boat objects in the fleet. */
 	public ArrayList<Boat> getBoats() {
 		return boats;
 	}
 
+	/** @return Set of coordinates of this player's boats that are sunk. */
 	public Set<String> getOwnSunkCoordinates() {
 		return ownSunkCoordinates;
 	}
 
+	/** @return Set of enemy coordinates that have been confirmed as sunk. */
 	public Set<String> getEnemySunkCoordinates() {
 		return enemySunkCoordinates;
 	}
 
+	/** @return Set of enemy coordinates where a hit was confirmed. */
 	public Set<String> getEnemyFoundCoordinates() {
 		return enemyFoundCoordinates;
 	}
 
+	/** @return List of boat names (Carrier, Battleship, etc.). */
 	public ArrayList<String> getBoatsNames() {
 		return boatsNames;
 	}
-
-	
-	
 }
